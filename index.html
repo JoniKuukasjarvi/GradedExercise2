@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <style>
+        body {
+          background-color: black;
+        }
+        #target {
+          left: 160px;
+          position: relative;
+        }
+      </style>
+    </head>
+    <body>
+        <canvas id="target"></canvas>
+        <script>
+        const canvas = document.getElementById("target");
+        const context = canvas.getContext("2d");
+
+        canvas.width = 700;
+        canvas.height = 700;
+
+        const background = new Image();
+        background.src = "BackGround.JPG"
+  
+      class Log{
+        constructor(startX, startY, width, height, speedX, speedY) {
+          this.x = startX;
+          this.y = startY;
+          this.width = width;
+          this.height = height;
+          this.speedX = speedX;
+          this.speedY = speedY;
+          }
+          update(){
+          this.x= this.x + this.speedX;
+          this.y= this.y + this.speedY;
+          if(this.x == -100){ 
+            this.x = 660;
+          } 
+          if(this.x == 800){
+            this.x = -50;
+          }
+        }
+        draw(){
+          context.beginPath();
+        context.rect(this.x, this.y, 80, 40);
+        context.fillStyle = '#8E5B51';
+        context.fill();
+        context.lineWidth = 2;
+        context.strokeStyle = 'black';
+        context.stroke();
+        }
+          //new Car(600,550,50,50, -1, 0);
+      }
+      const log = [];
+      for(let i = 0; i <4; i++) {
+        log.push(
+          new Log(0 + i*210,265,50,50, 1, 0)
+        )
+      }
+      const log2 = [];
+      for(let i = 0; i <3; i++) {
+        log2.push(
+          new Log(0 + i*250,210,50,50, 2, 0)
+        )
+      }
+      const log3 = [];
+      for(let i = 0; i <3; i++) {
+        log3.push(
+          new Log(0 + i*250,150,50,50, -1, 0)
+        )
+      }
+      const log4 = [];
+      for(let i = 0; i <5; i++) {
+        log4.push(
+          new Log(0 + i*150,90,50,50, 1, 0)
+        )
+      }
+
+    
+
+      class car {
+        constructor(startX, startY, width, height, speedX, speedY) {
+          this.x = startX;
+          this.y = startY;
+          this.width = width;
+          this.height = height;
+          this.speedX = speedX;
+          this.speedY = speedY;
+        }
+
+        update(){
+          this.x= this.x + this.speedX;
+          this.y= this.y + this.speedY;
+          if(this.x == -100){ 
+            this.x = 660;
+          } 
+          if(this.x == 800){
+            this.x = -50;
+          }
+        }
+        draw(){
+          context.beginPath();
+        context.rect(this.x, this.y, 80, 40);
+        context.fillStyle = 'gray';
+        context.fill();
+        context.lineWidth = 2;
+        context.strokeStyle = 'black';
+        context.stroke();
+        }
+          //new Car(600,550,50,50, -1, 0);
+      }
+      const Car1 = [];
+      for(let i = 0; i <3; i++) {
+        Car1.push(
+          new car(0 + i*250,550,50,50, 1, 0)
+        )
+      }
+      //Cars on the 2nd row
+      const Car2 = [];
+      for(let i = 0; i <3; i++) {
+        Car2.push(
+          new car(0 + i*300,500,50,50, -1, 0)
+        )
+      }
+
+      //Cars on the 3rd row
+      const Car3 = [];
+      for(let i = 0; i <3; i++) {
+        Car3.push(
+          new car(600 + i*300, 435, 50, 50, 1, 0)
+        )
+      }
+
+      //Cars on the 4th row
+      const Car4 = [];
+      for(let i = 0; i <4; i++) {
+        Car4.push(
+          new car(200 + i*250, 375, 50, 50, -1, 0)
+        )
+      }
+
+
+      
+
+      class Player {
+        constructor(x , y, movementSpeedX, movementSpeedY, width, height){
+          this.x = x;
+          this.y = y;
+          this.movementSpeedX = movementSpeedX;
+          this.movementSpeedY = movementSpeedY;
+          this.width = width;
+          this.height = height;
+        }
+
+        moveUp(){
+          this.y = this.y - this.movementSpeedY;
+        }
+        moveDown(){
+          this.y = this.y + this.movementSpeedY;
+        }
+        moveRight(){
+          this.x = this.x + this.movementSpeedX;
+        }
+        moveLeft(){
+          this.x = this.x - this.movementSpeedX;
+        }
+
+        update(){
+          const collisionCheck = (objectStorage, collisionResultFunction) => {
+            for(var i=0; i< objectStorage.length; i++){
+              if(((this.x + this.width) > objectStorage[i].x ) &&
+                (this.x < (objectStorage[i].x + objectStorage[i].width)) &&
+                ((this.y + this.height) > objectStorage[i].y) &&
+                (this.y < (objectStorage[i].y + objectStorage[i].height))) {
+                  collisionResultFunction(objectStorage[i]) 
+              }
+            }
+          }
+          collisionCheck(Car1, ()=> {this.x= 320, this.y= 605;});
+          collisionCheck(Car2, ()=> {this.x= 320, this.y= 605;});
+          collisionCheck(Car3, ()=> {this.x= 320, this.y= 605;});
+          collisionCheck(Car4, ()=> {this.x= 320, this.y= 605;});
+          collisionCheck(log, (collidedObject)=> {this.x= this.x+ collidedObject.speedX})
+          collisionCheck(log2, (collidedObject)=> {this.x= this.x+ collidedObject.speedX})
+          collisionCheck(log3, (collidedObject)=> {this.x= this.x+ collidedObject.speedX})
+          collisionCheck(log4, (collidedObject)=> {this.x= this.x+ collidedObject.speedX})
+
+          if (this.y < 0){
+              reset()}
+        }
+//this.x= 320, this.y= 605;
+
+        draw(){
+          context.beginPath();
+          context.rect(this.x, this.y, 45, 45);
+          context.fillStyle = 'green';
+          context.fill();
+          context.lineWidth = 1;
+          context.strokeStyle = 'blue';
+          context.stroke();
+        }
+
+      
+      }
+
+              
+
+      const player = new Player(320, 605, 45 ,57, 45, 45);
+      const rectangle = new car();
+      const gameObjectStorage = [];
+
+      //frog comes on top with these lines
+      //car.push(player);
+      //car.push(obstacle);
+      
+      function  reset() {
+        player.x = 320, player.y= 605;
+      }
+
+
+
+      function updateScreen() {
+          
+          context.clearRect(0,0,canvas.width,canvas.height);
+          context.drawImage(background, 0, 0);
+
+          for(let i = 0; i < Car1.length; i++) {
+                      Car1[i].update();
+                      Car1[i].draw();
+                    }
+
+          for(let i = 0; i < Car2.length; i++) {
+            Car2[i].update();
+            Car2[i].draw();
+          }
+                    for(let i = 0; i < Car3.length; i++) {
+            Car3[i].update();
+            Car3[i].draw();
+          }
+          for(let i = 0; i < Car4.length; i++) {
+            Car4[i].update();
+            Car4[i].draw();
+          }
+          for(let i = 0; i < log.length; i++) {
+                      log[i].update();
+                      log[i].draw();
+                    }
+          for(let i = 0; i < log2.length; i++) {
+                      log2[i].update();
+                      log2[i].draw();
+                    }
+          for(let i = 0; i < log3.length; i++) {
+                      log3[i].update();
+                      log3[i].draw();
+                    }
+          for(let i = 0; i < log4.length; i++) {
+                      log4[i].update();
+                      log4[i].draw();
+                    }                    
+
+          player.update();
+          player.draw();
+          window.requestAnimationFrame(updateScreen);
+      }
+      window.requestAnimationFrame(updateScreen);
+
+
+      window.addEventListener('keydown', function(event){
+
+
+        switch(event.keyCode) {
+          case 37: 
+
+            player.moveLeft()
+            break;
+          case 38:
+
+            player.moveUp();
+            break;
+          case 39:
+
+          player.moveRight();
+            break;
+          case 40:
+
+            player.moveDown();
+            break;
+        }
+
+      });
+        </script>
+
+
+    </body>
+</html>
